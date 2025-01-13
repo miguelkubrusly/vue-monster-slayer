@@ -71,7 +71,27 @@ const app = Vue.createApp({
     },
   },
   watchers: {
-    playerLife() {},
-    monsterLife() {},
+    playerLife() {
+      if (this.playerLife > 100) {
+        this.playerLife = 100;
+      } else if (this.playerLife < 0) {
+        this.playerLife = 0;
+      }
+      if (this.playerLife === 0 && this.monsterLife === 0) {
+        this.winner = D;
+      } else if (this.playerLife === 0) {
+        this.winner = M;
+      }
+    },
+    monsterLife() {
+      if (this.monsterLife > 100) {
+        this.monsterLife = 100;
+      } else if (this.monsterLife < 0) {
+        this.monsterLife = 0;
+      }
+      if (this.monsterLife === 0) {
+        this.winner = P;
+      }
+    },
   },
 });
