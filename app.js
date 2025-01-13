@@ -64,10 +64,10 @@ const app = Vue.createApp({
   },
   computed: {
     playerLifeBarStyle() {
-      return { width: this.playerLife };
+      return { width: this.playerLife + "%" };
     },
     monsterLifeBarStyle() {
-      return { width: this.monsterLife };
+      return { width: this.monsterLife + "%" };
     },
   },
   watchers: {
@@ -95,3 +95,5 @@ const app = Vue.createApp({
     },
   },
 });
+
+app.mount("#game");
