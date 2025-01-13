@@ -31,12 +31,11 @@ const app = Vue.createApp({
       this.monsterAttack();
     },
     playerSpecialAttack() {
-      this.specialBuffer = 3;
       const attackValue = generateRandomNum(22, 12);
-      this.monsterLife -= specialAttackValue;
+      this.monsterLife -= attackValue;
       this.createLogMessage(P, "attack", attackValue);
       this.monsterAttack();
-      this.specialBuffer;
+      this.specialBuffer = 3;
     },
     playerSurrender() {
       this.winner = M;
