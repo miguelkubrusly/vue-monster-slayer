@@ -53,11 +53,28 @@
           ></div>
         </div>
       </section>
-      <section id="controls">
+      <section
+        v-if="winner===null"
+        id="controls"
+      >
         <button @click="playerAttack">ATTACK</button>
-        <button @click="playerSpecialAttack">SPECIAL ATTACK</button>
+        <button
+          :disabled="specialBuffer>0"
+          @click="playerSpecialAttack"
+        >
+          SPECIAL ATTACK
+        </button>
         <button @click="playerHeal">HEAL</button>
         <button @click="playerSurrender">SURRENDER</button>
+      </section>
+      <section
+        class="container"
+        v-else
+      >
+        <h2>Game Over!</h2>
+        <h3 v-if="winner==='player'">You win!</h3>
+        <h3 v-else-if="winner==='monster'">You lost.</h3>
+        <h3 v-else>It's a draw.</h3>
       </section>
       <section
         id="log"
@@ -71,6 +88,4 @@
 </html>
 
 <!-- TODO
- make dynamic life bar
- make game end
  make log -->
