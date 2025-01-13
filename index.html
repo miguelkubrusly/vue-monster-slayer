@@ -2,90 +2,66 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vue Basics</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="styles.css"
-    />
-    <script
-      src="https://unpkg.com/vue@3.4.9/dist/vue.global.js"
-      defer
-    ></script>
-    <script
-      src="app.js"
-      defer
-    ></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@3.4.9/dist/vue.global.js" defer></script>
+    <script src="app.js" defer></script>
   </head>
   <body>
     <header>
       <h1>Monster Slayer</h1>
     </header>
     <div id="game">
-      <section
-        id="monster"
-        class="container"
-      >
+      <section id="monster" class="container">
         <h2>Monster Health</h2>
         <div class="healthbar">
-          <div
-            class="healthbar__value"
-            :style="monsterLifeBarStyle"
-          ></div>
+          <div class="healthbar__value" :style="monsterLifeBarStyle"></div>
         </div>
       </section>
-      <section
-        id="player"
-        class="container"
-      >
+      <section id="player" class="container">
         <h2>Your Health</h2>
         <div class="healthbar">
-          <div
-            class="healthbar__value"
-            :style="playerLifeBarStyle"
-          ></div>
+          <div class="healthbar__value" :style="playerLifeBarStyle"></div>
         </div>
       </section>
-      <section
-        v-if="winner===null"
-        id="controls"
-      >
+      <section v-if="winner===null" id="controls">
         <button @click="playerAttack">ATTACK</button>
-        <button
-          :disabled="specialBuffer>0"
-          @click="playerSpecialAttack"
-        >
+        <button :disabled="specialBuffer>0" @click="playerSpecialAttack">
           SPECIAL ATTACK
         </button>
         <button @click="playerHeal">HEAL</button>
         <button @click="playerSurrender">SURRENDER</button>
       </section>
-      <section
-        class="container"
-        v-else
-      >
+      <section class="container" v-else>
         <h2>Game Over!</h2>
         <h3 v-if="winner==='player'">You win!</h3>
         <h3 v-else-if="winner==='monster'">You lost.</h3>
         <h3 v-else>It's a draw.</h3>
       </section>
-      <section
-        id="log"
-        class="container"
-      >
+      <section id="log" class="container">
         <h2>Battle Log</h2>
-        <ul></ul>
+        <ul>
+          <li v-for="(msg, index) in logMessages" :key="index">
+            <span
+              :class="{'log--player': msg.who === 'player', 'log--monster': msg.who === 'monster'}"
+              >{{ msg.who === "player" ? "Player " : "Monster " }}</span
+            >
+            <span :
+              >{{ msg.what === "heal"? "heals himself by " : "attack deals "
+              }}</span
+            >
+            <span
+              :class="{'log--heal':msg.what === 'heal', 'log--damage' : msg.what === 'attack'}"
+              >{{ msg.value }}</span
+            >
+          </li>
+        </ul>
       </section>
     </div>
   </body>
 </html>
-
-<!-- TODO
- make log -->
