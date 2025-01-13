@@ -11,32 +11,36 @@ const app = Vue.createApp({
     return {
       playerLife: 100,
       monsterLife: 100,
-      currentRound: 0,
+      specialBuffer: 0,
       logMessages: [],
       winner: null,
     };
   },
   methods: {
     playerAttack() {
-      const attackValue = generateRandomNum(12, 5);
+      this.specialBuffer -= 1;
+      const attackValue = generateRandomNum(10, 5);
       this.monsterLife -= attackValue;
-      this.monsterAttack();
       this.createLogMessage(P.toUpperCase(), "attack", attackValue);
+      this.monsterAttack();
     },
     playerHeal() {
-      const healingValue = generateRandomNum(15, 3);
+      const healingValue = generateRandomNum(25, 15);
       this.playerLife += healingValue;
       this.createLogMessage(P.toUpperCase(), "heal", healingValue);
+      this.monsterAttack();
     },
     playerSpecialAttack() {
+      this.specialBuffer = 3;
       const specialAttackValue = generateRandomNum(22, 12);
       this.monsterLife -= specialAttackValue;
-      this.monsterAttack();
       this.createLogMessage(
         P.toUpperCase(),
         "special attack",
         specialAttackValue
       );
+      this.monsterAttack();
+      this.specialBuffer;
     },
     playerSurrender() {
       this.winner = M;
@@ -44,7 +48,6 @@ const app = Vue.createApp({
     monsterAttack() {
       const attackValue = generateRandomNum(18, 10);
       this.playerLife -= attackValue;
-      this.monsterLife -= attackValue;
       this.createLogMessage(M.toUpperCase(), "attack", attackValue);
     },
     createLogMessage(who, what, value) {
@@ -53,43 +56,46 @@ const app = Vue.createApp({
         what,
         value,
       };
+      this.logMessages.unshift(message);
     },
     restartGame() {
       this.playerLife = 100;
       this.monsterLife = 100;
-      this.currentRound = 0;
+      this.specialBuffer = 0;
       this.logMessages = [];
       this.winner = null;
     },
   },
   computed: {
     playerLifeBarStyle() {
-      return { width: this.playerLife + "%" };
-    },
-    monsterLifeBarStyle() {
-      return { width: this.monsterLife + "%" };
-    },
-  },
-  watchers: {
-    playerLife() {
       if (this.playerLife > 100) {
         this.playerLife = 100;
       } else if (this.playerLife < 0) {
         this.playerLife = 0;
       }
-      if (this.playerLife === 0 && this.monsterLife === 0) {
-        this.winner = D;
-      } else if (this.playerLife === 0) {
-        this.winner = M;
-      }
+      return { width: this.playerLife + "%" };
     },
-    monsterLife() {
+    monsterLifeBarStyle() {
       if (this.monsterLife > 100) {
         this.monsterLife = 100;
       } else if (this.monsterLife < 0) {
         this.monsterLife = 0;
       }
-      if (this.monsterLife === 0) {
+      return { width: this.monsterLife + "%" };
+    },
+  },
+  watch: {
+    playerLife(value) {
+      if (value <= 0 && this.monsterLife <= 0) {
+        this.winner = D;
+      } else if (value <= 0) {
+        this.winner = M;
+      }
+    },
+    monsterLife(value) {
+      if (this.playerLife <= 0 && value <= 0) {
+        this.winner = D;
+      } else if (value <= 0) {
         this.winner = P;
       }
     },
