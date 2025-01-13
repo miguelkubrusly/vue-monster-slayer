@@ -21,24 +21,20 @@ const app = Vue.createApp({
       this.specialBuffer -= 1;
       const attackValue = generateRandomNum(10, 5);
       this.monsterLife -= attackValue;
-      this.createLogMessage(P.toUpperCase(), "attack", attackValue);
+      this.createLogMessage(P, "attack", attackValue);
       this.monsterAttack();
     },
     playerHeal() {
       const healingValue = generateRandomNum(25, 15);
       this.playerLife += healingValue;
-      this.createLogMessage(P.toUpperCase(), "heal", healingValue);
+      this.createLogMessage(P, "heal", healingValue);
       this.monsterAttack();
     },
     playerSpecialAttack() {
       this.specialBuffer = 3;
-      const specialAttackValue = generateRandomNum(22, 12);
+      const attackValue = generateRandomNum(22, 12);
       this.monsterLife -= specialAttackValue;
-      this.createLogMessage(
-        P.toUpperCase(),
-        "special attack",
-        specialAttackValue
-      );
+      this.createLogMessage(P, "attack", attackValue);
       this.monsterAttack();
       this.specialBuffer;
     },
@@ -48,7 +44,7 @@ const app = Vue.createApp({
     monsterAttack() {
       const attackValue = generateRandomNum(18, 10);
       this.playerLife -= attackValue;
-      this.createLogMessage(M.toUpperCase(), "attack", attackValue);
+      this.createLogMessage(M, "attack", attackValue);
     },
     createLogMessage(who, what, value) {
       const message = {
